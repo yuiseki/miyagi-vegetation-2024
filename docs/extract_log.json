@@ -1,0 +1,26 @@
+{
+ "cutter": "KSJ N03 20260101 04 (Miyagi), 8339 polygons dissolved",
+ "area_crs": 6678,
+ "files": {
+  "veg2024bk2a.gpkg": {
+   "read_in_bbox": 177789,
+   "intersect": 123328,
+   "wholly_inside": 119391,
+   "crossing": 3937,
+   "crossing_kept_after_clip": 3937,
+   "crossing_dropped_no_area": 0,
+   "kept": 123328
+  },
+  "veg2024bk2b.gpkg": {
+   "read_in_bbox": 45528,
+   "intersect": 19716,
+   "wholly_inside": 18603,
+   "crossing": 1113,
+   "crossing_kept_after_clip": 1113,
+   "crossing_dropped_no_area": 0,
+   "kept": 19716
+  }
+ },
+ "rows": 143044,
+ "invalid_after": 0
+}
