@@ -107,8 +107,8 @@ the polygon over all Japan.
 
 ## What is in it
 
-- {rows:,} polygons, {area:.1f} km2, {nulls_txt}.
-- area by 地域ブロック: {blocks_area}.{block_note}, {invalid} invalid and {empty} empty geometries.
+- {rows:,} polygons, {area:.1f} km2, {nulls_txt}, {invalid} invalid and {empty} empty geometries.
+- area by 地域ブロック: {blocks_area}.{block_note}
 - 作成年度 (polygons): {years}
 - {legends} legends are present. {m_codes} of them contain ブナ, ミズナラ, ナラ or コナラ in the name ({m_polys:,} polygons;
   the legends overlap in meaning, so the areas are not to be added as one class):
@@ -130,7 +130,10 @@ A polygon is one community; the legend does not give the share of a species.
 
 `scripts/07_verify.py` reads the source files again, selects {en} with a second engine (DuckDB spatial), and checks
 that the same fids are kept, that the 11 attributes are equal for every polygon, that unclipped geometries are
-byte-equal to the source, and that clipped ones are inside the boundary and no larger than the source. After the
+byte-equal to the source, and that clipped ones are inside the boundary and no larger than the source (areas are
+compared with a tolerance of 1e-12 plus 1e-6 of the polygon's own area, because two computations of the area of a
+very fine coast-line polygon differ by that much; the largest excess found is `max_outside_area_deg2` in
+`docs/verify_local.json`). After the
 upload, `scripts/08_verify_hub.py` reads this repository back at a fixed revision and compares it with the local copy.
 The revision is recorded in `docs/revision.md` of the GitHub repository ({github}).
 
@@ -160,7 +163,7 @@ def main() -> None:
     holding = [n for n in veg.SOURCE_FILES if f[n]["kept"]]
     files_list = ", ".join(f"`{n}` ({veg.BLOCK_NAMES.get(n[9], '')})" for n in veg.SOURCE_FILES)
     per_file = f"{len(holding)} of the {len(veg.SOURCE_FILES)} source files hold parts of {veg.EN}: " + ", ".join(
-        f"{f[n]['kept']:,} polygons from `{n.split('.')[0][-4:]}`" for n in holding
+        f"{f[n]['kept']:,} polygons from `{n[7:].split('.')[0]}`" for n in holding
     )
     dropped = sum(x["crossing_dropped_no_area"] for x in f.values())
     nulls = sum(prof["nulls"].values())

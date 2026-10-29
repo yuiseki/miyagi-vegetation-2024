@@ -13,6 +13,12 @@
  "clipped_not_equal_to_intersection": 0,
  "clipped_without_source_overlap": 0,
  "clipped_larger_than_source": 0,
+ "max_outside_area_deg2": {
+  "fid": 1193623,
+  "excess": 2.2766348268393743e-15,
+  "polygon_area": 7.602712725783176e-05,
+  "ratio": 2.9945032897515566e-11
+ },
  "invalid": 0,
  "clipped_rows": 5050,
  "unclipped_but_crossing": 0

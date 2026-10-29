@@ -15,6 +15,13 @@ ROOT = Path(__file__).parents[1]
 ATTRS = veg.ATTRS
 
 
+# Areas are compared in square degrees. Two area computations of the same polygon differ by floating-point and
+# overlay noise that grows with the polygon (seen: 5e-12 square degrees, 1e-7 of a 4.6e-5 polygon on a very fine
+# coast line, about 0.06 m2 of 460,000 m2, where the Python difference with the boundary is 5e-18). The
+# tolerance is therefore 1e-12 plus 1e-6 of the polygon's own area (about 0.5 m2 for that polygon).
+TOL = "1e-12 + 1e-6 * ST_Area(m.geometry)"
+
+
 def main() -> int:
     run = sorted((ROOT / "data" / "raw").glob("*/MANIFEST.json"))[-1].parent
     z = ROOT / "data" / "docs" / veg.N03_ZIP
@@ -71,21 +78,26 @@ def main() -> int:
         "select count(*) from mine m join src s using (fid) where not m.clipped and ST_AsWKB(m.geometry) <> ST_AsWKB(s.geom)"
     )
     res["clipped_outside_boundary"] = q(
-        "select count(*) from mine m left join ov_mine o using (fid) where m.clipped and ST_Area(m.geometry) - coalesce(o.a, 0) > 1e-12"
+        f"select count(*) from mine m left join ov_mine o using (fid) where m.clipped and ST_Area(m.geometry) - coalesce(o.a, 0) > {TOL}"
     )
     res["clipped_not_equal_to_intersection"] = q(
-        "select count(*) from mine m join ov_cand s using (fid) where m.clipped and abs(ST_Area(m.geometry) - s.a) > 1e-12"
+        f"select count(*) from mine m join ov_cand s using (fid) where m.clipped and abs(ST_Area(m.geometry) - s.a) > {TOL}"
     )
     res["clipped_without_source_overlap"] = q(
         "select count(*) from mine m where m.clipped and m.fid not in (select fid from ov_cand)"
     )
     res["clipped_larger_than_source"] = q(
-        "select count(*) from mine m join src s using (fid) where m.clipped and ST_Area(m.geometry) > ST_Area(s.geom) + 1e-12"
+        f"select count(*) from mine m join src s using (fid) where m.clipped and ST_Area(m.geometry) > ST_Area(s.geom) + {TOL}"
     )
+    fid, ex, area = con.execute(
+        "select m.fid, ST_Area(m.geometry) - coalesce(o.a, 0) e, ST_Area(m.geometry) from mine m "
+        "left join ov_mine o using (fid) order by e desc limit 1"
+    ).fetchone()
+    res["max_outside_area_deg2"] = {"fid": fid, "excess": ex, "polygon_area": area, "ratio": ex / area}
     res["invalid"] = q("select count(*) from mine where not ST_IsValid(geometry)")
     res["clipped_rows"] = q("select count(*) from mine where clipped")
     res["unclipped_but_crossing"] = q(
-        "select count(*) from mine m left join ov_mine o using (fid) where not m.clipped and ST_Area(m.geometry) - coalesce(o.a, 0) > 1e-12"
+        f"select count(*) from mine m left join ov_mine o using (fid) where not m.clipped and ST_Area(m.geometry) - coalesce(o.a, 0) > {TOL}"
     )
     (ROOT / "docs").mkdir(exist_ok=True)
     (ROOT / "docs" / "verify_local.json").write_text(json.dumps(res, indent=1) + "\n")
