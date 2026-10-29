@@ -1,0 +1,22 @@
+{
+ "repo": "yuiseki/miyagi-vegetation-2024",
+ "revision": "67aba7c055665fb5bfd02644600d019d657fe7cd",
+ "sha256": {
+  "README.md": "fa2453d28dbe11fcfd1237cee4799d3a1fa8baf34649d26083fb38e7aca2f7bf",
+  "LICENSE": "70bcc432f5708059b3e61914693fa584bc6632f65ed55050a4749386dbf2a8f6",
+  "provenance.yaml": "b0f2f3e2661da0fb65419a82ab1d9da0aba1fe3e5796fb55748d174d26d21ffe",
+  "parquet/vegetation_miyagi.parquet": "b037968004365dfb102feda63a306cce63791766d8235e710bca9c77dc79741f",
+  "raw/20261028/MANIFEST.json": "2db99aec9b864e32167067f605cae3692c8d1c0ff1380d1854bb6093bea9ae08",
+  "raw/20261028/ckan_record.json": "a2a8016a2e29ff0cad5f22cfb2713e4a1d9ba1bac59eff23ae5b876f03bac891",
+  "docs/miyagi_profile.md": "e58845afd117c92110336adbbddc3b7d3df6497885d8a274afdff25b2811dfc0",
+  "docs/miyagi_profile.json": "222be635173d49aabaa12baa4933ad7dd384c3b37e47a2db12d5559b6c82adda",
+  "docs/raw_profile.md": "874e770c062c06b0aebf414a807cd46af604d4569f7f7933bef207d926b2294e",
+  "docs/raw_profile.json": "f85d132e7100dbd5d85898a586ee6f12bcec112542a1b9ec79c7556f37f3d029",
+  "docs/extract_log.json": "8a6729adad4e0ce5ec252fc85133aac898869e01f75ecfba7e031fbae08c1609",
+  "docs/legend_miyagi.tsv": "7d97eadb88f2fe008746fd1a2d7a3e62c3a86d0489cfaafaf938fa0963956673",
+  "docs/legend_matches_miyagi.tsv": "c1a02ade30b8f04c5ca7ec61501f4754d400fe85c9154863d54ca2d820bc8790",
+  "docs/legend_all_source_raw.tsv": "a37ae97249b8f1908fe9169db34456d84ddc7f513ea579a090bc15f13d7d9dc4",
+  "docs/legend_matches_source_raw.tsv": "d2a4e151259a4b914af6ba5f8c62b5e06800c271ae349fde1229c8b962b7646f",
+  "docs/verify_local.json": "ef865927eb6ac103a182de51d78921ca9b5188336327bfaa6a76c8ba9ba953d1"
+ }
+}
